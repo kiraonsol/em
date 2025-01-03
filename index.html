@@ -3,36 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evil Model | AI Trading Platform</title>
+    <title>The Evil Model | AI Trading Suite</title>
     <style>
         :root {
-            --primary: #FD7024;
-            --secondary: #FFF0B3;
-            --background: #000000;
+            --primary: #ff0055;
+            --secondary: #00ffff;
+            --accent: #ff00ff;
+            --background: #0a0a0a;
             --text: #ffffff;
+            --gradient: linear-gradient(45deg, var(--primary), var(--secondary));
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        @font-face {
+            font-family: 'Cyber';
+            src: url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
         }
 
         body {
             background: var(--background);
             color: var(--text);
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        .webgl-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: 0;
-            pointer-events: none;
+        .glitch-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glitch-text {
+            position: relative;
+            animation: glitch 1s infinite;
+            text-shadow: 2px 2px var(--primary),
+                         -2px -2px var(--secondary);
+        }
+
+        @keyframes glitch {
+            0% {
+                transform: translate(0);
+            }
+            20% {
+                transform: translate(-2px, 2px);
+            }
+            40% {
+                transform: translate(-2px, -2px);
+            }
+            60% {
+                transform: translate(2px, 2px);
+            }
+            80% {
+                transform: translate(2px, -2px);
+            }
+            100% {
+                transform: translate(0);
+            }
         }
 
         .navbar {
@@ -40,9 +71,11 @@
             top: 0;
             left: 0;
             width: 100%;
-            padding: 2rem;
-            z-index: 100;
-            mix-blend-mode: difference;
+            padding: 1.5rem;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 0, 85, 0.2);
         }
 
         .nav-content {
@@ -54,581 +87,545 @@
         }
 
         .logo {
-            font-size: 1.2rem;
-            font-weight: 400;
-            letter-spacing: 0.1em;
-            color: var(--secondary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .nav-links {
             display: flex;
-            gap: 3rem;
+            gap: 2rem;
         }
 
         .nav-links a {
             color: var(--text);
             text-decoration: none;
-            font-size: 0.9rem;
-            letter-spacing: 0.05em;
-            transition: color 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
         }
 
-        .nav-links a:hover {
-            color: var(--primary);
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-links a:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
         }
 
         .hero {
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
-            padding: 0 10vw;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-content {
-            max-width: 800px;
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 8vw, 6rem);
-            line-height: 1;
-            font-weight: 400;
-            margin-bottom: 2rem;
-            color: var(--secondary);
-        }
-
-        .hero p {
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            line-height: 1.6;
-            max-width: 600px;
-            margin-bottom: 3rem;
-            color: rgba(255, 240, 179, 0.8);
-        }
-
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            padding: 1rem 2rem;
-            background: transparent;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 0.9rem;
-            letter-spacing: 0.1em;
-            transition: all 0.3s ease;
+            padding: 6rem 2rem;
             position: relative;
             overflow: hidden;
         }
 
-        .cta-button:hover {
-            background: var(--primary);
-            color: var(--background);
-        }
-
-        .section {
-            padding: 10vh 10vw;
-            position: relative;
-            z-index: 1;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-        }
-        .split-section {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 4rem;
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .split-section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .content-block {
-            position: relative;
-        }
-
-        .content-block h2 {
-            font-size: clamp(2rem, 4vw, 3.5rem);
-            font-weight: 400;
-            color: var(--secondary);
-            margin-bottom: 2rem;
-            line-height: 1.2;
-        }
-
-        .content-block p {
-            color: rgba(255, 240, 179, 0.8);
-            line-height: 1.8;
-            margin-bottom: 2rem;
-        }
-
-        /* WebGL Canvas Styling */
-        #webgl {
-            position: fixed;
+        .hero::before {
+            content: '';
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0;
+            background: radial-gradient(circle at center, rgba(255, 0, 85, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+            pointer-events: none;
         }
 
-        /* Shader Code */
-        <script id="vertexShader" type="x-shader/x-vertex">
-            varying vec2 vUv;
-            varying float vWave;
-            uniform float uTime;
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
 
-            //	Classic Perlin 3D Noise 
-            //	by Stefan Gustavson
-            vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
-            vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
-            vec3 fade(vec3 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-            float noise(vec3 P){
-                vec3 Pi0 = floor(P);
-                vec3 Pi1 = Pi0 + vec3(1.0);
-                vec3 Pf0 = fract(P);
-                vec3 Pf1 = Pf0 - vec3(1.0);
-                vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
-                vec4 iy = vec4(Pi0.yy, Pi1.yy);
-                vec4 iz0 = Pi0.zzzz;
-                vec4 iz1 = Pi1.zzzz;
+        .hero p {
+            font-size: clamp(1.1rem, 2vw, 1.3rem);
+            max-width: 600px;
+            margin-bottom: 3rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
 
-                vec4 ixy = permute(permute(ix) + iy);
-                vec4 ixy0 = permute(ixy + iz0);
-                vec4 ixy1 = permute(ixy + iz1);
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--gradient);
+            color: var(--text);
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
 
-                vec4 gx0 = ixy0 / 7.0;
-                vec4 gy0 = fract(floor(gx0) / 7.0) - 0.5;
-                gx0 = fract(gx0);
-                vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);
-                vec4 sz0 = step(gz0, vec4(0.0));
-                gx0 -= sz0 * (step(0.0, gx0) - 0.5);
-                gy0 -= sz0 * (step(0.0, gy0) - 0.5);
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
+        }
+        .section {
+            padding: 8rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
 
-                vec4 gx1 = ixy1 / 7.0;
-                vec4 gy1 = fract(floor(gx1) / 7.0) - 0.5;
-                gx1 = fract(gx1);
-                vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);
-                vec4 sz1 = step(gz1, vec4(0.0));
-                gx1 -= sz1 * (step(0.0, gx1) - 0.5);
-                gy1 -= sz1 * (step(0.0, gy1) - 0.5);
+        .section-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
 
-                vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);
-                vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);
-                vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);
-                vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);
-                vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);
-                vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);
-                vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);
-                vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
 
-                vec4 norm0 = taylorInvSqrt(vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110)));
-                g000 *= norm0.x;
-                g010 *= norm0.y;
-                g100 *= norm0.z;
-                g110 *= norm0.w;
-                vec4 norm1 = taylorInvSqrt(vec4(dot(g001, g001), dot(g011, g011), dot(g101, g101), dot(g111, g111)));
-                g001 *= norm1.x;
-                g011 *= norm1.y;
-                g101 *= norm1.z;
-                g111 *= norm1.w;
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 0, 85, 0.2);
+            padding: 2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
 
-                float n000 = dot(g000, Pf0);
-                float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));
-                float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));
-                float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));
-                float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));
-                float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));
-                float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));
-                float n111 = dot(g111, Pf1);
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(255, 0, 85, 0.2);
+        }
 
-                vec3 fade_xyz = fade(Pf0);
-                vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
-                vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
-                float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
-                return 2.2 * n_xyz;
+        .module-card {
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .module-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .price-card {
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid rgba(255, 0, 255, 0.2);
+            padding: 3rem 2rem;
+            border-radius: 8px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .price-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient);
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 2rem 0;
+        }
+
+        .cyber-list {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .cyber-list li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .cyber-list li::before {
+            content: '›';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        /* Animation Classes */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .glitch-effect {
+            animation: glitch 0.3s infinite;
+        }
+
+        @keyframes glitch {
+            0% {
+                transform: translate(0);
             }
-
-            void main() {
-                vUv = uv;
-                
-                vec3 pos = position;
-                float noiseFreq = 2.0;
-                float noiseAmp = 0.4;
-                vec3 noisePos = vec3(pos.x * noiseFreq + uTime, pos.y, pos.z);
-                pos.z += noise(noisePos) * noiseAmp;
-                vWave = pos.z;
-
-                gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+            25% {
+                transform: translate(-5px, 5px);
             }
-        </script>
-
-        <script id="fragmentShader" type="x-shader/x-fragment">
-            varying vec2 vUv;
-            varying float vWave;
-            uniform float uTime;
-            uniform vec3 uColorA;
-            uniform vec3 uColorB;
-
-            void main() {
-                float wave = vWave * 0.2;
-                vec3 color = mix(uColorA, uColorB, wave);
-                gl_FragColor = vec4(color, 1.0);
+            50% {
+                transform: translate(5px, -5px);
             }
-        </script>
-                               <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    </head>
-    <body>
-        <canvas id="webgl"></canvas>
-        
-        <nav class="navbar">
-            <div class="nav-content">
-                <div class="logo">EVIL MODEL</div>
-                <div class="nav-links">
-                    <a href="#about">About</a>
-                    <a href="#features">Features</a>
-                    <a href="#contact">Contact</a>
+            75% {
+                transform: translate(-5px, -5px);
+            }
+            100% {
+                transform: translate(0);
+            }
+        }
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">EVIL MODEL</div>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#features">Features</a>
+                <a href="#modules">Modules</a>
+                <a href="#pricing">Pricing</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="glitch-text">The Evil Model</h1>
+            <p>Part of the Evil AI Suite of tools. Powered by an AI algorithmic data platform, this model plots levels where price will most likely form manipulation based on historical data analysis and real-time adjustments.</p>
+            <a href="#pricing" class="cta-button">Get Started Now</a>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="section-content">
+            <h2 class="glitch-text">About The Evil Model</h2>
+            <div class="feature-grid">
+                <div class="feature-card fade-up">
+                    <h3>Real-Time Analysis</h3>
+                    <p>Data collection and analysis are performed in real-time across indices, forex, and crypto markets.</p>
+                </div>
+                <div class="feature-card fade-up">
+                    <h3>AI-Powered Predictions</h3>
+                    <p>Advanced algorithms identify and predict price manipulation levels with unprecedented accuracy.</p>
+                </div>
+                <div class="feature-card fade-up">
+                    <h3>Multi-Market Coverage</h3>
+                    <p>Comprehensive coverage across multiple financial markets for diverse trading opportunities.</p>
                 </div>
             </div>
-        </nav>
+        </div>
+    </section>
 
-        <section class="hero">
-            <div class="hero-content">
-                <h1>Mystical Trading Intelligence</h1>
-                <p>Where ancient wisdom meets artificial intelligence to transform your trading experience.</p>
-                <a href="#features" class="cta-button">Explore Platform</a>
+    <section id="creator" class="section">
+        <div class="section-content">
+            <div class="fade-up">
+                <h2 class="glitch-text">Created by FutureCode</h2>
+                <p>A veteran trader and mentor, FutureCode worked intensively to align horizontal price levels with manipulative times, enabling traders to anticipate future manipulations in price. The Evil Model was born from years of experience and countless hours of research.</p>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="about" class="section">
-            <div class="split-section">
-                <div class="content-block">
-                    <h2>Algorithmic Prophecy</h2>
-                    <p>Our AI model combines centuries-old trading wisdom with cutting-edge machine learning to predict market movements with unprecedented accuracy.</p>
-                    <a href="#" class="cta-button">Learn More</a>
-                </div>
-                <div class="content-block">
-                    <div class="floating-element"></div>
-                </div>
+    <section id="modules" class="section">
+        <div class="section-content">
+            <h2 class="glitch-text">Course Modules</h2>
+            <div class="module-card fade-up">
+                <h3>Introduction to Evil Model</h3>
+                <p>Comprehensive overview of the model and indicator functionality with video demonstrations.</p>
             </div>
-        </section>
-
-        <section id="features" class="section">
-            <div class="split-section">
-                <div class="content-block">
-                    <div class="floating-element"></div>
-                </div>
-                <div class="content-block">
-                    <h2>Advanced Features</h2>
-                    <p>Experience real-time market analysis, predictive modeling, and risk management systems guided by both data and intuition.</p>
-                    <a href="#" class="cta-button">Explore Features</a>
-                </div>
+            <div class="module-card fade-up">
+                <h3>IDM Identification</h3>
+                <p>Master the art of identifying and interpreting key market manipulation patterns.</p>
             </div>
-        </section>
+            <div class="module-card fade-up">
+                <h3>Market Structure Analysis</h3>
+                <p>Learn to monitor and understand complex market structures for better trading decisions.</p>
+            </div>
+            <div class="module-card fade-up">
+                <h3>EM Aligned Statistical Targets</h3>
+                <p>Advanced techniques for determining high-probability price targets.</p>
+            </div>
+        </div>
+    </section>
+<section id="pricing" class="section">
+        <div class="section-content">
+            <h2 class="glitch-text">Join The Evil Model</h2>
+            <div class="price-card fade-up">
+                <h3>The Evil Model Bundle</h3>
+                <div class="price">$999</div>
+                <ul class="cyber-list">
+                    <li>Complete Evil Model Course</li>
+                    <li>Exclusive Discord Access</li>
+                    <li>Evil Model Indicator</li>
+                    <li>Real-time Market Analysis</li>
+                    <li>Live Trading Sessions</li>
+                    <li>Lifetime Updates</li>
+                </ul>
+                <a href="#" class="cta-button">Get Started</a>
+            </div>
+        </div>
+    </section>
 
-        <script>
-            // Initialize Three.js Scene
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({
-                canvas: document.querySelector('#webgl'),
-                antialias: true,
-                alpha: true
-            });
-
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-            // Create geometry
-            const geometry = new THREE.PlaneGeometry(20, 20, 64, 64);
-
-            // Create material with custom shaders
-            const material = new THREE.ShaderMaterial({
-                vertexShader: document.getElementById('vertexShader').textContent,
-                fragmentShader: document.getElementById('fragmentShader').textContent,
-                uniforms: {
-                    uTime: { value: 0 },
-                    uColorA: { value: new THREE.Color('#FD7024') },
-                    uColorB: { value: new THREE.Color('#FFF0B3') }
-                },
-                wireframe: false,
-                side: THREE.DoubleSide
-            });
-
-            // Create mesh
-            const mesh = new THREE.Mesh(geometry, material);
-            scene.add(mesh);
-
-            // Position camera
-            camera.position.set(0, 0, 5);
-
-            // Animation
-            const clock = new THREE.Clock();
-
-            function animate() {
-                const elapsedTime = clock.getElapsedTime();
-                material.uniforms.uTime.value = elapsedTime;
-                renderer.render(scene, camera);
-                requestAnimationFrame(animate);
-            }
-
-            animate();
-
-            // Responsive handling
-            window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
-
-            // GSAP Animations
-            gsap.registerPlugin(ScrollTrigger);
-
-            // Animate sections on scroll
-            document.querySelectorAll('.split-section').forEach(section => {
-                gsap.from(section, {
-                    scrollTrigger: {
-                        trigger: section,
-                        start: "top center",
-                        end: "bottom center",
-                        scrub: 1
-                    },
-                    y: 100,
-                    opacity: 0,
-                    duration: 1.5,
-                    ease: "power2.out"
-                });
-            });
-
-            // Parallax effect on scroll
-            const parallaxElements = document.querySelectorAll('.floating-element');
-            
-            parallaxElements.forEach(element => {
-                gsap.to(element, {
-                    scrollTrigger: {
-                        trigger: element,
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: 1
-                    },
-                    y: -100,
-                    ease: "none"
-                });
-            });
-                        // Interactive cursor effect
-            const cursor = document.createElement('div');
-            cursor.className = 'cursor';
-            document.body.appendChild(cursor);
-
-            const cursorFollower = document.createElement('div');
-            cursorFollower.className = 'cursor-follower';
-            document.body.appendChild(cursorFollower);
-
-            let mouseX = 0;
-            let mouseY = 0;
-            let cursorX = 0;
-            let cursorY = 0;
-            let followerX = 0;
-            let followerY = 0;
-
-            document.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-            });
-
-            function updateCursor() {
-                // Smooth cursor movement
-                cursorX += (mouseX - cursorX) * 0.2;
-                cursorY += (mouseY - cursorY) * 0.2;
-                followerX += (mouseX - followerX) * 0.1;
-                followerY += (mouseY - followerY) * 0.1;
-
-                cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
-                cursorFollower.style.transform = `translate(${followerX}px, ${followerY}px)`;
-
-                requestAnimationFrame(updateCursor);
-            }
-            updateCursor();
-
-            // Interactive elements hover effect
-            const interactiveElements = document.querySelectorAll('a, button, .interactive');
-            
-            interactiveElements.forEach(element => {
-                element.addEventListener('mouseenter', () => {
-                    cursor.classList.add('cursor-hover');
-                    cursorFollower.classList.add('cursor-hover');
-                });
-
-                element.addEventListener('mouseleave', () => {
-                    cursor.classList.remove('cursor-hover');
-                    cursorFollower.classList.remove('cursor-hover');
-                });
-            });
-
-            // Smooth scroll handling
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    
-                    gsap.to(window, {
-                        duration: 1,
-                        scrollTo: {
-                            y: target,
-                            autoKill: false
-                        },
-                        ease: "power2.inOut"
-                    });
-                });
-            });
-        </script>
-
-        <style>
-            .cursor {
-                width: 8px;
-                height: 8px;
-                background: var(--primary);
-                border-radius: 50%;
-                position: fixed;
-                pointer-events: none;
-                z-index: 9999;
-                transform: translate(-50%, -50%);
-                transition: width 0.3s, height 0.3s;
-            }
-
-            .cursor-follower {
-                width: 40px;
-                height: 40px;
-                border: 1px solid var(--primary);
-                border-radius: 50%;
-                position: fixed;
-                pointer-events: none;
-                z-index: 9998;
-                transform: translate(-50%, -50%);
-                transition: width 0.3s, height 0.3s, border-color 0.3s;
-            }
-
-            .cursor-hover {
-                transform: translate(-50%, -50%) scale(1.5);
-                background: transparent;
-                border-color: var(--secondary);
-            }
-
-            .floating-element {
-                width: 100%;
-                height: 400px;
-                background: linear-gradient(45deg, var(--primary), var(--secondary));
-                border-radius: 10px;
-                opacity: 0.1;
-                transform-style: preserve-3d;
-                will-change: transform;
-            }
-
-            footer {
-                padding: 8rem 10vw 4rem;
-                background: linear-gradient(to top, #000000, transparent);
-                position: relative;
-                z-index: 2;
-            }
-
-            .footer-content {
-                max-width: 1400px;
-                margin: 0 auto;
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 4rem;
-            }
-
-            .footer-section h3 {
-                color: var(--secondary);
-                font-size: 1.2rem;
-                font-weight: 400;
-                margin-bottom: 2rem;
-            }
-
-            .footer-section ul {
-                list-style: none;
-            }
-
-            .footer-section ul li {
-                margin-bottom: 1rem;
-            }
-
-            .footer-section ul li a {
-                color: rgba(255, 240, 179, 0.6);
-                text-decoration: none;
-                transition: color 0.3s ease;
-            }
-
-            .footer-section ul li a:hover {
-                color: var(--primary);
-            }
-
-            .footer-bottom {
-                margin-top: 4rem;
-                padding-top: 2rem;
-                border-top: 1px solid rgba(255, 240, 179, 0.1);
-                text-align: center;
-                color: rgba(255, 240, 179, 0.4);
-            }
-
-            @media (max-width: 768px) {
-                .nav-links {
-                    display: none;
-                }
-
-                .split-section {
-                    grid-template-columns: 1fr;
-                    gap: 2rem;
-                }
-
-                .floating-element {
-                    height: 300px;
-                }
-
-                footer {
-                    padding: 4rem 2rem 2rem;
-                }
-            }
-        </style>
-
-        <footer>
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Company</h3>
+    <footer class="section">
+        <div class="section-content">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Evil AI Suite</h3>
+                    <p>Part of the revolutionary trading technology stack.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
                     <ul>
                         <li><a href="#about">About</a></li>
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#modules">Modules</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
                     </ul>
                 </div>
-                <div class="footer-section">
-                    <h3>Resources</h3>
-                    <ul>
-                        <li><a href="#">Documentation</a></li>
-                        <li><a href="#">API Reference</a></li>
-                        <li><a href="#">Support</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Legal</h3>
-                    <ul>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Cookie Policy</a></li>
-                    </ul>
+                <div class="footer-col">
+                    <h3>Contact</h3>
+                    <p>support@evilmodel.ai</p>
                 </div>
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2025 Evil Model. All rights reserved.</p>
             </div>
-        </footer>
-    </body>
+        </div>
+    </footer>
+
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Custom cursor
+        const cursor = document.querySelector('.cursor');
+        const cursorFollower = document.querySelector('.cursor-follower');
+
+        let mouseX = 0;
+        let mouseY = 0;
+        let posX = 0;
+        let posY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        gsap.to({}, 0.016, {
+            repeat: -1,
+            onRepeat: () => {
+                posX += (mouseX - posX) / 5;
+                posY += (mouseY - posY) / 5;
+
+                gsap.set(cursor, {
+                    css: {
+                        left: mouseX,
+                        top: mouseY
+                    }
+                });
+
+                gsap.set(cursorFollower, {
+                    css: {
+                        left: posX,
+                        top: posY
+                    }
+                });
+            }
+        });
+
+        // Scroll animations
+        const fadeUpElements = document.querySelectorAll('.fade-up');
+        fadeUpElements.forEach(element => {
+            gsap.from(element, {
+                scrollTrigger: {
+                    trigger: element,
+                    start: "top bottom-=100",
+                    toggleActions: "play none none reverse"
+                },
+                y: 60,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out"
+            });
+        });
+
+        // Glitch effect on hover
+        const glitchElements = document.querySelectorAll('.glitch-text');
+        glitchElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                element.classList.add('glitch-effect');
+            });
+            element.addEventListener('mouseleave', () => {
+                element.classList.remove('glitch-effect');
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                gsap.to(window, {
+                    duration: 1,
+                    scrollTo: target,
+                    ease: "power2.inOut"
+                });
+            });
+        });
+
+        // Random glitch animation
+        function randomGlitch() {
+            const glitchTexts = document.querySelectorAll('.glitch-text');
+            const randomElement = glitchTexts[Math.floor(Math.random() * glitchTexts.length)];
+            
+            randomElement.classList.add('glitch-effect');
+            setTimeout(() => {
+                randomElement.classList.remove('glitch-effect');
+            }, 200);
+        }
+
+        setInterval(randomGlitch, 3000);
+
+        // Parallax effect
+        document.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+
+            gsap.to('.feature-card', {
+                x: moveX,
+                y: moveY,
+                duration: 1,
+                ease: "power2.out"
+            });
+        });
+    </script>
+
+    <style>
+        .cursor {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-follower {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--secondary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-col h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-col ul li a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .cursor, .cursor-follower {
+                display: none;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .footer-grid {
+                gap: 2rem;
+            }
+        }
+    </style>
+</body>
 </html>
