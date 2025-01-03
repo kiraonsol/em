@@ -7,6 +7,7 @@
     <style>
         :root {
             --primary: #FF6F61;
+            --primary-dark: #E25747;
             --background: #F5F5F5;
             --text: #000000;
             --text-secondary: rgba(0, 0, 0, 0.7);
@@ -91,6 +92,7 @@
         .nav-links {
             display: flex;
             gap: 2rem;
+            align-items: center;
         }
 
         .nav-links a {
@@ -100,7 +102,7 @@
             position: relative;
         }
 
-        .nav-links a::after {
+        .nav-links a:not(.cta-button)::after {
             content: '';
             position: absolute;
             bottom: -4px;
@@ -111,7 +113,7 @@
             transition: width 0.3s ease;
         }
 
-        .nav-links a:hover::after {
+        .nav-links a:not(.cta-button):hover::after {
             width: 100%;
         }
 
@@ -146,14 +148,15 @@
         }
 
         .module-card {
-            background: rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.15);
             border-radius: 8px;
             padding: 2rem;
             margin-bottom: 1.5rem;
             transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             transform: translateZ(0);
             backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
 
         .module-card:hover {
@@ -187,7 +190,7 @@
             display: inline-block;
             padding: 1rem 2rem;
             background: var(--text);
-            color: var(--background);
+            color: var(--background) !important;
             text-decoration: none;
             border-radius: 4px;
             font-weight: 500;
@@ -198,6 +201,7 @@
         .cta-button:hover {
             transform: translateY(-2px) translateZ(20px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            background: #1a1a1a;
         }
 
         @media (max-width: 768px) {
@@ -244,9 +248,17 @@
             <div class="container">
                 <div class="scale-in">
                     <h2 style="margin-bottom: 2rem;">AI-Powered Analysis</h2>
-                    <p style="margin-bottom: 3rem;">
+                    <p style="color: var(--text-secondary); margin-bottom: 3rem;">
                         Our algorithmic platform plots precise manipulation levels through real-time data analysis across indices, FX, and crypto markets. Leveraging advanced AI technology to predict and identify market movements.
                     </p>
+                    <div class="module-card fade-up">
+                        <h3>Real-time Analysis</h3>
+                        <p>Live data collection and processing across multiple markets</p>
+                    </div>
+                    <div class="module-card fade-up">
+                        <h3>Pattern Recognition</h3>
+                        <p>Advanced algorithmic detection of manipulation patterns</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -255,10 +267,10 @@
             <div class="container">
                 <div class="fade-up">
                     <h2 style="margin-bottom: 2rem;">The Story</h2>
-                    <p style="margin-bottom: 2rem;">
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
                         Created by Futurecode, a veteran trader and mentor, The Evil Model emerged from intensive research into aligning horizontal price levels with manipulative times. This powerful tool enables traders to anticipate future market manipulations with unprecedented accuracy.
                     </p>
-                    <p>
+                    <p style="color: var(--text-secondary);">
                         Drawing from the exclusive insights of the FutureCode Discord community, numerous traders have already achieved remarkable success using these mysterious and powerful levels.
                     </p>
                 </div>
@@ -291,7 +303,7 @@
             <div class="container">
                 <div class="scale-in" style="text-align: center;">
                     <h2 style="margin-bottom: 2rem;">Join The Evil Model Bundle</h2>
-                    <p style="margin-bottom: 3rem;">
+                    <p style="color: var(--text-secondary); margin-bottom: 3rem;">
                         Get complete access to the course, Discord community, and EM indicator
                     </p>
                     <a href="#" class="cta-button">Sign Up Now</a>
@@ -324,13 +336,13 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-            // Create animated grid
+            // Create animated grid with darker orange
             const geometry = new THREE.PlaneGeometry(30, 30, 32, 32);
             const material = new THREE.MeshPhongMaterial({
-                color: 0xFF6F61,
+                color: 0xE25747,
                 wireframe: true,
                 transparent: true,
-                opacity: 0.1
+                opacity: 0.2
             });
 
             const mesh = new THREE.Mesh(geometry, material);
@@ -341,9 +353,12 @@
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
             scene.add(ambientLight);
 
-            const pointLight = new THREE.PointLight(0xFF6F61, 1);
+            const pointLight = new THREE.PointLight(0xE25747, 1.2);
             pointLight.position.set(2, 3, 4);
             scene.add(pointLight);
+
+            const hemisphereLight = new THREE.HemisphereLight(0xE25747, 0x000000, 0.3);
+            scene.add(hemisphereLight);
 
             camera.position.set(0, 5, 7);
 
@@ -401,9 +416,6 @@
                 }, 250);
             });
 
-            // Start animation
-            animate();
-
             // Mouse movement effect
             let mouseX = 0, mouseY = 0;
             document.addEventListener('mousemove', (event) => {
@@ -413,6 +425,9 @@
                 mesh.rotation.x = -Math.PI * 0.5 + mouseY * 0.1;
                 mesh.rotation.y = mouseX * 0.1;
             });
+
+            // Start animation
+            animate();
         }
     </script>
 </body>
