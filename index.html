@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EVIL MODEL | AI Trading Platform</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
         :root {
-            --primary: #8B0000;
-            --primary-dark: #660000;
-            --background: #0A0A0A;
-            --text: #FFFFFF;
-            --text-secondary: rgba(255, 255, 255, 0.7);
-            --overlay: rgba(10, 10, 10, 0.9);
+            --primary: #FF6F61;
+            --primary-dark: #E25747;
+            --background: #F5F5F5;
+            --text: #000000;
+            --text-secondary: rgba(0, 0, 0, 0.7);
+            --overlay: rgba(245, 245, 245, 0.9);
         }
 
         * {
@@ -69,7 +68,7 @@
             width: 100%;
             padding: 2rem;
             z-index: 100;
-            background: rgba(10, 10, 10, 0.8);
+            background: rgba(245, 245, 245, 0.8);
             backdrop-filter: blur(10px);
             transform: translateZ(0);
         }
@@ -149,131 +148,31 @@
         }
 
         .module-card {
-            background: rgba(20, 20, 20, 0.9);
-            border: 1px solid rgba(139, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.15);
             border-radius: 8px;
             padding: 2rem;
             margin-bottom: 1.5rem;
             transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             transform: translateZ(0);
             backdrop-filter: blur(10px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
 
-        .module-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(
-                135deg,
-                transparent 0%,
-                rgba(139, 0, 0, 0.1) 50%,
-                transparent 100%
-            );
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .module-card:hover::after {
-            opacity: 1;
-        }
-
-        .blood-splatter {
-            position: absolute;
-            pointer-events: none;
-            background: radial-gradient(circle at center, 
-                rgba(139, 0, 0, 0.9) 0%,
-                rgba(180, 0, 0, 0.7) 30%,
-                rgba(120, 0, 0, 0.4) 70%,
-                transparent 100%);
-            filter: blur(1px);
-            border-radius: 50%;
-            opacity: 0;
-            transform-origin: center;
-        }
-
-        .blood-drip {
-            position: absolute;
-            width: 2px;
-            background: linear-gradient(to bottom, 
-                rgba(139, 0, 0, 0.9),
-                rgba(120, 0, 0, 0.4));
-            pointer-events: none;
-            opacity: 0;
-            border-radius: 50%;
-            transform-origin: top;
-        }
-
-        .cta-button {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: var(--primary);
-            color: var(--text) !important;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: translateZ(0);
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-        }
-
-        .cta-button::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent,
-                rgba(139, 0, 0, 0.2),
-                transparent
-            );
-            transform: translateX(-100%);
-            transition: transform 0.6s;
-        }
-
-        .cta-button:hover::before {
-            transform: translateX(100%);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px) translateZ(20px);
-            box-shadow: 0 10px 20px rgba(139, 0, 0, 0.3);
-            background: var(--primary-dark);
+        .module-card:hover {
+            transform: translateY(-10px) translateZ(20px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
         .fade-up {
             opacity: 0;
             transform: translateY(30px) translateZ(0);
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .fade-up.visible {
-            animation: floatUp 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-        }
-
-        @keyframes floatUp {
-            0% {
-                opacity: 0;
-                transform: translateY(60px) scale(0.9);
-            }
-            50% {
-                opacity: 1;
-                transform: translateY(-10px) scale(1.02);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            opacity: 1;
+            transform: translateY(0) translateZ(0);
         }
 
         .scale-in {
@@ -285,6 +184,24 @@
         .scale-in.visible {
             opacity: 1;
             transform: scale(1) translateZ(0);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--text);
+            color: var(--background) !important;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateZ(0);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px) translateZ(20px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            background: #1a1a1a;
         }
 
         @media (max-width: 768px) {
@@ -346,6 +263,20 @@
             </div>
         </section>
 
+        <section class="section" id="about">
+            <div class="container">
+                <div class="fade-up">
+                    <h2 style="margin-bottom: 2rem;">The Story</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                        Created by Futurecode, a veteran trader and mentor, The Evil Model emerged from intensive research into aligning horizontal price levels with manipulative times. This powerful tool enables traders to anticipate future market manipulations with unprecedented accuracy.
+                    </p>
+                    <p style="color: var(--text-secondary);">
+                        Drawing from the exclusive insights of the FutureCode Discord community, numerous traders have already achieved remarkable success using these mysterious and powerful levels.
+                    </p>
+                </div>
+            </div>
+        </section>
+
         <section class="section" id="modules">
             <div class="container">
                 <h2 class="fade-up" style="margin-bottom: 3rem;">Course Modules</h2>
@@ -383,13 +314,14 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // WebGL Background Setup
+        // Performance optimization
         const params = {
             enableWebGL: window.innerWidth > 768,
             particleCount: window.innerWidth > 1200 ? 100 : 50,
             animationSpeed: 0.001
         };
 
+        // Enhanced WebGL Setup
         if (params.enableWebGL) {
             const canvas = document.querySelector('#webgl-background');
             const scene = new THREE.Scene();
@@ -404,9 +336,10 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
+            // Create animated grid with darker orange
             const geometry = new THREE.PlaneGeometry(30, 30, 32, 32);
             const material = new THREE.MeshPhongMaterial({
-                color: 0x8B0000,
+                color: 0xE25747,
                 wireframe: true,
                 transparent: true,
                 opacity: 0.2
@@ -416,209 +349,86 @@
             mesh.rotation.x = -Math.PI * 0.5;
             scene.add(mesh);
 
+            // Enhanced lighting
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
             scene.add(ambientLight);
 
-            const pointLight = new THREE.PointLight(0x8B0000, 1.2);
+            const pointLight = new THREE.PointLight(0xE25747, 1.2);
             pointLight.position.set(2, 3, 4);
             scene.add(pointLight);
 
+            const hemisphereLight = new THREE.HemisphereLight(0xE25747, 0x000000, 0.3);
+            scene.add(hemisphereLight);
+
             camera.position.set(0, 5, 7);
 
-            function animate(currentTime = 0) {
-                const positions = geometry.attributes.position.array;
-                for (let i = 0; i < positions.length; i += 3) {
-                    positions[i + 2] = Math.sin((currentTime * params.animationSpeed) + positions[i]) * 0.5;
+            // Optimized animation
+            let lastTime = 0;
+            const animate = (currentTime = 0) => {
+                const deltaTime = currentTime - lastTime;
+                lastTime = currentTime;
+
+                if (deltaTime < 32) { // Cap at ~30fps for performance
+                    const positions = geometry.attributes.position.array;
+                    for (let i = 0; i < positions.length; i += 3) {
+                        positions[i + 2] = Math.sin((currentTime * params.animationSpeed) + positions[i]) * 0.5;
+                    }
+                    geometry.attributes.position.needsUpdate = true;
+                    
+                    renderer.render(scene, camera);
                 }
-                geometry.attributes.position.needsUpdate = true;
-                renderer.render(scene, camera);
                 requestAnimationFrame(animate);
-            }
+            };
 
-            animate();
+            // Enhanced scroll animations
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: "-50px"
+            };
 
-            window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
-        }
-
-        // Blood Splatter Effect
-        function createBloodSplatter(element) {
-            const splatterCount = 8;
-            const dripCount = 4;
-            
-            // Create main splatter effects
-            for (let i = 0; i < splatterCount; i++) {
-                setTimeout(() => {
-                    const splatter = document.createElement('div');
-                    splatter.className = 'blood-splatter';
-                    
-                    const size = Math.random() * 30 + 20;
-                    splatter.style.width = `${size}px`;
-                    splatter.style.height = `${size}px`;
-                    
-                    const rect = element.getBoundingClientRect();
-                    const x = Math.random() * rect.width;
-                    const y = Math.random() * rect.height;
-                    
-                    splatter.style.left = `${x}px`;
-                    splatter.style.top = `${y}px`;
-                    
-                    element.appendChild(splatter);
-
-                    gsap.to(splatter, {
-                        duration: 0.3,
-                        opacity: 0.8,
-                        scale: Math.random() * 0.5 + 1,
-                        ease: "power2.out"
-                    });
-
-                    gsap.to(splatter, {
-                        duration: 1,
-                        opacity: 0,
-                        delay: 0.3,
-                        ease: "power2.in",
-                        onComplete: () => splatter.remove()
-                    });
-
-                    // Add drips to splatters
-                    if (Math.random() > 0.5) {
-                        const drip = document.createElement('div');
-                        drip.className = 'blood-drip';
-                        drip.style.left = `${x + size/2}px`;
-                        drip.style.top = `${y + size/2}px`;
-                        element.appendChild(drip);
-
-                        gsap.to(drip, {
-                            duration: 0.1,
-                            opacity: 0.8,
-                            height: Math.random() * 30 + 20,
-                            ease: "power2.out"
-                        });
-
-                        gsap.to(drip, {
-                            duration: 1.5,
-                            opacity: 0,
-                            y: Math.random() * 50 + 30,
-                            delay: 0.2,
-                            ease: "power2.in",
-                            onComplete: () => drip.remove()
-                        });
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        
+                        // Section transition effect
+                        const overlay = document.querySelector('.section-overlay');
+                        overlay.style.opacity = '0.1';
+                        setTimeout(() => {
+                            overlay.style.opacity = '0';
+                        }, 500);
                     }
-                }, i * 50);
-            }
+                });
+            }, observerOptions);
 
-            // Create additional drips
-            for (let i = 0; i < dripCount; i++) {
-                setTimeout(() => {
-                    const drip = document.createElement('div');
-                    drip.className = 'blood-drip';
-                    
-                    const rect = element.getBoundingClientRect();
-                    const x = Math.random() * rect.width;
-                    
-                    drip.style.left = `${x}px`;
-                    drip.style.top = '0';
-                    
-                    element.appendChild(drip);
-
-                    gsap.to(drip, {
-                        duration: 0.2,
-                        opacity: 0.9,
-                        height: Math.random() * 40 + 30,
-                        ease: "power2.out"
-                    });
-
-                    gsap.to(drip, {
-                        duration: 2,
-                        opacity: 0,
-                        y: rect.height,
-                        delay: 0.2,
-                        ease: "power2.in",
-                        onComplete: () => drip.remove()
-                    });
-                }, i * 200);
-            }
-        }
-
-        // Scroll and Hover Animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    
-                    if (entry.target.classList.contains('module-card') || 
-                        entry.target.classList.contains('cta-button')) {
-                        createBloodSplatter(entry.target);
-                    }
-
-                    if (entry.target.classList.contains('cta-button')) {
-                        gsap.from(entry.target, {
-                            duration: 1.2,
-                            scale: 0.8,
-                            opacity: 0,
-                            y: 40,
-                            rotation: -5,
-                            ease: "elastic.out(1, 0.5)"
-                        });
-                    }
-                }
-            });
-        }, {
-            threshold: 0.2,
-            rootMargin: "-50px"
-        });
-
-        // Initialize after DOM load
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.fade-up, .scale-in, .module-card, .cta-button').forEach(element => {
+            document.querySelectorAll('.fade-up, .scale-in').forEach(element => {
                 observer.observe(element);
             });
 
-            // Module card hover effects
-            document.querySelectorAll('.module-card').forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    createBloodSplatter(card);
-                    gsap.to(card, {
-                        duration: 0.3,
-                        y: -10,
-                        scale: 1.02,
-                        ease: "power2.out"
-                    });
-                });
-
-                card.addEventListener('mouseleave', () => {
-                    gsap.to(card, {
-                        duration: 0.3,
-                        y: 0,
-                        scale: 1,
-                        ease: "power2.in"
-                    });
-                });
+            // Optimized resize handler
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                }, 250);
             });
 
-            // CTA button hover effects
-            document.querySelectorAll('.cta-button').forEach(button => {
-                button.addEventListener('mouseenter', () => {
-                    createBloodSplatter(button);
-                    gsap.to(button, {
-                        duration: 0.3,
-                        scale: 1.05,
-                        ease: "power2.out"
-                    });
-                });
-
-                button.addEventListener('mouseleave', () => {
-                    gsap.to(button, {
-                        duration: 0.3,
-                        scale: 1,
-                        ease: "power2.in"
-                    });
-                });
+            // Mouse movement effect
+            let mouseX = 0, mouseY = 0;
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+                mouseY = (event.clientY / window.innerHeight) * 2 - 1;
+                
+                mesh.rotation.x = -Math.PI * 0.5 + mouseY * 0.1;
+                mesh.rotation.y = mouseX * 0.1;
             });
-        });
+
+            // Start animation
+            animate();
+        }
     </script>
 </body>
 </html>
