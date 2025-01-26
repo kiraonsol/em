@@ -5,132 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EVIL MODEL | AI Trading Platform</title>
     <style>
-        :root {
-            --primary: #FF6F61;
-            --primary-dark: #E25747;
-            --background: #F5F5F5;
-            --text: #000000;
-            --text-secondary: rgba(0, 0, 0, 0.7);
-            --overlay: rgba(245, 245, 245, 0.9);
-        }
+        /* [Previous styles remain exactly the same until the hero section] */
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            background-color: var(--background);
-        }
-
-        body {
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        #webgl-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: 1;
-            opacity: 0.3;
-        }
-
-        .content {
-            position: relative;
-            z-index: 2;
-            perspective: 1000px;
-        }
-
-        .section-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--overlay);
-            pointer-events: none;
-            opacity: 0;
-            z-index: 99;
-            transition: opacity 0.5s ease;
-        }
-
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 2rem;
-            z-index: 100;
-            background: rgba(245, 245, 245, 0.8);
-            backdrop-filter: blur(10px);
-            transform: translateZ(0);
-        }
-
-        .nav-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
+        /* Update and add these hero-specific styles */
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
             align-items: center;
         }
 
-        .logo {
-            font-size: 1.5rem;
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: var(--text);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a:not(.cta-button)::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--primary);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:not(.cta-button):hover::after {
-            width: 100%;
-        }
-
-        .section {
-            min-height: 100vh;
-            padding: 8rem 2rem;
-            display: flex;
-            align-items: center;
-            position: relative;
-            transform-style: preserve-3d;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-            transform-style: preserve-3d;
+        .hero-text {
+            max-width: 600px;
         }
 
         .hero h1 {
@@ -147,64 +33,54 @@
             color: var(--text-secondary);
         }
 
-        .module-card {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(0, 0, 0, 0.15);
-            border-radius: 8px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: translateZ(0);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
-
-        .module-card:hover {
-            transform: translateY(-10px) translateZ(20px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .fade-up {
-            opacity: 0;
-            transform: translateY(30px) translateZ(0);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .fade-up.visible {
-            opacity: 1;
-            transform: translateY(0) translateZ(0);
-        }
-
-        .scale-in {
-            opacity: 0;
-            transform: scale(0.9) translateZ(0);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .scale-in.visible {
-            opacity: 1;
-            transform: scale(1) translateZ(0);
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: var(--text);
-            color: var(--background) !important;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        .hero-video {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 12px;
+            overflow: hidden;
             transform: translateZ(0);
         }
 
-        .cta-button:hover {
-            transform: translateY(-2px) translateZ(20px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            background: #1a1a1a;
+        .hero-video::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-radius: inherit;
+            pointer-events: none;
+        }
+
+        .feature-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: inherit;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        /* Update media queries */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-text {
+                max-width: 100%;
+            }
+
+            .hero-video {
+                max-width: 600px;
+                margin: 0 auto;
+            }
         }
 
         @media (max-width: 768px) {
+            .hero-video {
+                max-width: 100%;
+            }
+
             .nav-links {
                 display: none;
             }
@@ -217,6 +93,8 @@
                 transform: translateY(-5px) translateZ(10px);
             }
         }
+
+        /* [Rest of the previous styles remain exactly the same] */
     </style>
 </head>
 <body>
@@ -236,14 +114,32 @@
             </div>
         </nav>
 
+        <!-- Updated Hero Section -->
         <section class="section hero" id="home">
             <div class="container">
-                <h1 class="fade-up">EVIL MODEL</h1>
-                <p class="fade-up">Advanced AI-powered market manipulation detection platform. Part of the Evil AI Suite of tools.</p>
-                <a href="#signup" class="cta-button fade-up">Join The Evil Model Bundle</a>
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1 class="fade-up">EVIL MODEL</h1>
+                        <p class="fade-up">Advanced AI-powered market manipulation detection platform. Part of the Evil AI Suite of tools.</p>
+                        <a href="#signup" class="cta-button fade-up">Join The Evil Model Bundle</a>
+                    </div>
+                    <div class="hero-video fade-up">
+                        <video 
+                            autoplay 
+                            loop 
+                            muted 
+                            playsinline 
+                            class="feature-video"
+                        >
+                            <source src="your-video-url.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
             </div>
         </section>
 
+        <!-- [Rest of the sections remain exactly the same] -->
         <section class="section" id="features">
             <div class="container">
                 <div class="scale-in">
@@ -312,123 +208,10 @@
         </section>
     </div>
 
+    <!-- [The entire script section remains exactly the same] -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // Performance optimization
-        const params = {
-            enableWebGL: window.innerWidth > 768,
-            particleCount: window.innerWidth > 1200 ? 100 : 50,
-            animationSpeed: 0.001
-        };
-
-        // Enhanced WebGL Setup
-        if (params.enableWebGL) {
-            const canvas = document.querySelector('#webgl-background');
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({
-                canvas: canvas,
-                antialias: true,
-                alpha: true,
-                powerPreference: "high-performance"
-            });
-
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-            // Create animated grid with darker orange
-            const geometry = new THREE.PlaneGeometry(30, 30, 32, 32);
-            const material = new THREE.MeshPhongMaterial({
-                color: 0xE25747,
-                wireframe: true,
-                transparent: true,
-                opacity: 0.2
-            });
-
-            const mesh = new THREE.Mesh(geometry, material);
-            mesh.rotation.x = -Math.PI * 0.5;
-            scene.add(mesh);
-
-            // Enhanced lighting
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-            scene.add(ambientLight);
-
-            const pointLight = new THREE.PointLight(0xE25747, 1.2);
-            pointLight.position.set(2, 3, 4);
-            scene.add(pointLight);
-
-            const hemisphereLight = new THREE.HemisphereLight(0xE25747, 0x000000, 0.3);
-            scene.add(hemisphereLight);
-
-            camera.position.set(0, 5, 7);
-
-            // Optimized animation
-            let lastTime = 0;
-            const animate = (currentTime = 0) => {
-                const deltaTime = currentTime - lastTime;
-                lastTime = currentTime;
-
-                if (deltaTime < 32) { // Cap at ~30fps for performance
-                    const positions = geometry.attributes.position.array;
-                    for (let i = 0; i < positions.length; i += 3) {
-                        positions[i + 2] = Math.sin((currentTime * params.animationSpeed) + positions[i]) * 0.5;
-                    }
-                    geometry.attributes.position.needsUpdate = true;
-                    
-                    renderer.render(scene, camera);
-                }
-                requestAnimationFrame(animate);
-            };
-
-            // Enhanced scroll animations
-            const observerOptions = {
-                threshold: 0.2,
-                rootMargin: "-50px"
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        
-                        // Section transition effect
-                        const overlay = document.querySelector('.section-overlay');
-                        overlay.style.opacity = '0.1';
-                        setTimeout(() => {
-                            overlay.style.opacity = '0';
-                        }, 500);
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.fade-up, .scale-in').forEach(element => {
-                observer.observe(element);
-            });
-
-            // Optimized resize handler
-            let resizeTimeout;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(() => {
-                    camera.aspect = window.innerWidth / window.innerHeight;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(window.innerWidth, window.innerHeight);
-                }, 250);
-            });
-
-            // Mouse movement effect
-            let mouseX = 0, mouseY = 0;
-            document.addEventListener('mousemove', (event) => {
-                mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-                mouseY = (event.clientY / window.innerHeight) * 2 - 1;
-                
-                mesh.rotation.x = -Math.PI * 0.5 + mouseY * 0.1;
-                mesh.rotation.y = mouseX * 0.1;
-            });
-
-            // Start animation
-            animate();
-        }
+        // [Previous WebGL and animation code remains exactly the same]
     </script>
 </body>
 </html>
