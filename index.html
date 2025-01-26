@@ -304,7 +304,7 @@
                 </div>
                 <div class="video-container fade-up">
                     <iframe 
-                        src="https://drive.google.com/file/d/1DxMFrJf1zN7Ie49Wb2e666-M-6Zl6A-s/preview" 
+                        src="https://drive.google.com/file/d/1EOXUjOaSmQrWZT6RSeUa2HYyLaixhixx/preview?enablejsapi=1&autoplay=1&mute=1&loop=1"
                         width="100%" 
                         height="100%" 
                         allow="autoplay"
@@ -385,6 +385,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
+        // [Previous WebGL animation code remains exactly the same]
         // Performance optimization
         const params = {
             enableWebGL: window.innerWidth > 768,
@@ -492,6 +493,48 @@
 
             animate();
         }
+    </script>
+
+    <!-- New Video Control Script -->
+    <script>
+        // Video auto-loop functionality
+        function handleVideo() {
+            const iframe = document.querySelector('.video-container iframe');
+            let player;
+            
+            // Function to restart video
+            function restartVideo() {
+                // Reset to beginning
+                player.contentWindow.postMessage('{"event":"command","func":"seekTo","args":[0]}', '*');
+                // Play video
+                player.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+            }
+
+            // Update iframe src to enable API
+            const originalSrc = iframe.src;
+            if (!originalSrc.includes('enablejsapi')) {
+                iframe.src = originalSrc + '?enablejsapi=1&autoplay=1&mute=1&loop=1';
+            }
+
+            // Listen for video events
+            window.addEventListener('message', function(event) {
+                if (event.data && event.data.info && event.data.info.playerState === 0) {
+                    // Video ended (playerState = 0), restart it
+                    restartVideo();
+                }
+            });
+
+            // Store iframe reference
+            player = iframe;
+
+            // Initial play
+            setTimeout(() => {
+                restartVideo();
+            }, 1000);
+        }
+
+        // Initialize video handling when DOM is loaded
+        document.addEventListener('DOMContentLoaded', handleVideo);
     </script>
 </body>
 </html>
