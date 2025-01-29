@@ -3,34 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evil Model</title>
+    <title>EVIL MODEL | AI Trading Platform</title>
     <style>
         :root {
-            --background: #0a0a0a;
-            --text-primary: #ffffff;
-            --text-secondary: #888888;
-            --accent: #E25747;
-            --accent-hover: #ff6b5b;
-            --section-padding: 5rem 1rem;
+            --primary: #FF6F61;
+            --primary-dark: #E25747;
+            --background: #F5F5F5;
+            --text: #000000;
+            --text-secondary: rgba(0, 0, 0, 0.7);
+            --overlay: rgba(245, 245, 245, 0.9);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         html {
             scroll-behavior: smooth;
+            background-color: var(--background);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            background-color: var(--background);
-            color: var(--text-primary);
+            color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
-            position: relative;
         }
 
         #webgl-background {
@@ -38,8 +37,15 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 100vh;
             z-index: 1;
+            opacity: 0.3;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            perspective: 1000px;
         }
 
         .section-overlay {
@@ -48,15 +54,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 2;
+            background: var(--overlay);
             pointer-events: none;
+            opacity: 0;
+            z-index: 99;
             transition: opacity 0.5s ease;
-        }
-
-        .content {
-            position: relative;
-            z-index: 3;
         }
 
         .navbar {
@@ -64,14 +66,15 @@
             top: 0;
             left: 0;
             width: 100%;
-            padding: 1.5rem;
-            background: rgba(10, 10, 10, 0.97);
+            padding: 2rem;
+            z-index: 100;
+            background: rgba(245, 245, 245, 0.8);
             backdrop-filter: blur(10px);
-            z-index: 1000;
+            transform: translateZ(0);
         }
 
         .nav-content {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -80,9 +83,10 @@
 
         .logo {
             font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--text-primary);
+            color: var(--text);
             text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.1em;
         }
 
         .nav-links {
@@ -92,130 +96,184 @@
         }
 
         .nav-links a {
-            color: var(--text-primary);
+            color: var(--text);
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
-        .nav-links a:hover {
-            color: var(--accent);
+        .nav-links a:not(.cta-button)::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:not(.cta-button):hover::after {
+            width: 100%;
         }
 
         .section {
-            padding: var(--section-padding);
             min-height: 100vh;
+            padding: 8rem 2rem;
             display: flex;
             align-items: center;
+            position: relative;
+            transform-style: preserve-3d;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
+            transform-style: preserve-3d;
         }
 
-        .hero {
-            padding-top: 120px;
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
         }
 
         .hero-content {
             max-width: 600px;
-            margin-bottom: 3rem;
-        }
-
-        .hero-content h1 {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-        }
-
-        .hero-content p {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background-color: var(--accent);
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        .cta-button:hover {
-            background-color: var(--accent-hover);
-            transform: translateY(-2px);
         }
 
         .video-container {
             position: relative;
             width: 100%;
-            padding-top: 56.25%;
-            border-radius: 15px;
+            aspect-ratio: 16/9;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 
-                0 10px 20px rgba(0,0,0,0.3),
-                0 20px 40px rgba(0,0,0,0.2),
-                0 30px 60px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            transform: translateZ(0);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15),
+                        0 10px 20px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease-out;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 12px;
+            overflow: hidden;
         }
 
         .video-container:hover {
-            transform: translateY(-5px);
+            transform: translateY(-5px) translateZ(0);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2),
+                        0 15px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            line-height: 1;
+            margin-bottom: 2rem;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero p {
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            max-width: 600px;
+            margin-bottom: 3rem;
+            color: var(--text-secondary);
         }
 
         .module-card {
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
             padding: 2rem;
             margin-bottom: 1.5rem;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: transform 0.3s ease, background-color 0.3s ease;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateZ(0);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
 
         .module-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255,255,255,0.08);
-        }
-
-        .module-card h3 {
-            color: var(--accent);
-            margin-bottom: 1rem;
+            transform: translateY(-10px) translateZ(20px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
         .fade-up {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transform: translateY(30px) translateZ(0);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0) translateZ(0);
         }
 
         .scale-in {
             opacity: 0;
-            transform: scale(0.95);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transform: scale(0.9) translateZ(0);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .visible {
+        .scale-in.visible {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: scale(1) translateZ(0);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--text);
+            color: var(--background) !important;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateZ(0);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px) translateZ(20px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            background: #1a1a1a;
+        }
+
+        @media (max-width: 1024px) {
+            .hero .container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .video-container {
+                max-width: 600px;
+                margin: 0 auto;
+            }
         }
 
         @media (max-width: 768px) {
-            .hero-content h1 {
-                font-size: 3rem;
-            }
-
             .nav-links {
                 display: none;
             }
 
-            .video-container {
-                margin-top: 2rem;
+            .section {
+                padding: 6rem 1.5rem;
+            }
+
+            .module-card:hover {
+                transform: translateY(-5px) translateZ(10px);
             }
         }
     </style>
@@ -244,17 +302,17 @@
                     <p class="fade-up">Advanced AI-powered market manipulation detection platform. Part of the Evil AI Suite of tools.</p>
                     <a href="#signup" class="cta-button fade-up">Join The Evil Model Bundle</a>
                 </div>
-                <div class="video-container fade-up">
-                    <iframe 
-                        src="https://vimeo.com/1050832157?autoplay=1&loop=1&background=1&muted=1" 
-                        width="100%" 
-                        height="100%" 
-                        allow="autoplay; fullscreen" 
-                        style="border: none; position: absolute; top: 0; left: 0;"
-                        loading="lazy"
-                        frameborder="0"
-                    ></iframe>
-                </div>
+              <div class="video-container fade-up">
+    <iframe 
+        src="https://player.vimeo.com/video/1050832157?autoplay=1&loop=1&background=1"
+        width="100%" 
+        height="100%" 
+        allow="autoplay; fullscreen" 
+        style="border: none; position: absolute; top: 0; left: 0;"
+        loading="lazy"
+        frameborder="0"
+    ></iframe>
+</div>
             </div>
         </section>
 
@@ -328,12 +386,14 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
+        // Performance optimization
         const params = {
             enableWebGL: window.innerWidth > 768,
             particleCount: window.innerWidth > 1200 ? 100 : 50,
             animationSpeed: 0.001
         };
 
+        // Enhanced WebGL Setup
         if (params.enableWebGL) {
             const canvas = document.querySelector('#webgl-background');
             const scene = new THREE.Scene();
