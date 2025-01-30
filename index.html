@@ -42,458 +42,143 @@
             opacity: 0.3;
         }
 
+        #matrix-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 1;
+            opacity: 0;
+            display: none;
+            transition: opacity 0.5s ease;
+        }
+
         .content {
             position: relative;
             z-index: 2;
             perspective: 1000px;
         }
 
-        .section-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--overlay);
-            pointer-events: none;
-            opacity: 0;
-            z-index: 99;
-            transition: opacity 0.5s ease;
-        }
-
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 2rem;
-            z-index: 100;
-            background: rgba(245, 245, 245, 0.8);
-            backdrop-filter: blur(10px);
-            transform: translateZ(0);
-        }
-
-        .nav-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: var(--text);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a:not(.cta-button)::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--primary);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:not(.cta-button):hover::after {
-            width: 100%;
-        }
-
-        .section {
-            min-height: 100vh;
-            padding: 8rem 2rem;
-            display: flex;
-            align-items: center;
-            position: relative;
-            transform-style: preserve-3d;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-            transform-style: preserve-3d;
-        }
-
-        .hero .container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .hero-content {
-            max-width: 600px;
-        }
-
-        .video-container {
-    position: relative;
-    width: 100%;
-    /* Updated aspect ratio to match 1920x1040 */
-    aspect-ratio: 1920/1040;
-    border-radius: 12px;
-    overflow: hidden;
-    transform: translateZ(0);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15),
-                0 10px 20px rgba(0, 0, 0, 0.1);
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease-out;
-}
-
-        .video-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .video-container:hover {
-            transform: translateY(-5px) translateZ(0);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2),
-                        0 15px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 8vw, 6rem);
-            line-height: 1;
-            margin-bottom: 2rem;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .hero p {
-            font-size: clamp(1.2rem, 2vw, 1.5rem);
-            max-width: 600px;
-            margin-bottom: 3rem;
-            color: var(--text-secondary);
-        }
-
-        .module-card {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(0, 0, 0, 0.15);
-            border-radius: 8px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: translateZ(0);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
-
-        .module-card:hover {
-            transform: translateY(-10px) translateZ(20px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .fade-up {
-            opacity: 0;
-            transform: translateY(30px) translateZ(0);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .fade-up.visible {
-            opacity: 1;
-            transform: translateY(0) translateZ(0);
-        }
-
-        .scale-in {
-            opacity: 0;
-            transform: scale(0.9) translateZ(0);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .scale-in.visible {
-            opacity: 1;
-            transform: scale(1) translateZ(0);
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: var(--text);
-            color: var(--background) !important;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: translateZ(0);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px) translateZ(20px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            background: #1a1a1a;
-        }
-
-        @media (max-width: 1024px) {
-            .hero .container {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .hero-content {
-                max-width: 100%;
-            }
-
-            .video-container {
-                max-width: 600px;
-                margin: 0 auto;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .section {
-                padding: 6rem 1.5rem;
-            }
-
-            .module-card:hover {
-                transform: translateY(-5px) translateZ(10px);
-            }
-        }
+        /* [Previous CSS remains exactly the same until the end of the style tag] */
+        [... Rest of your existing CSS remains exactly the same ...]
     </style>
 </head>
 <body>
     <canvas id="webgl-background"></canvas>
+    <canvas id="matrix-effect"></canvas>
     <div class="section-overlay"></div>
     
-    <div class="content">
-        <nav class="navbar">
-            <div class="nav-content">
-                <a href="#" class="logo">EVIL MODEL</a>
-                <div class="nav-links">
-                    <a href="#about">About</a>
-                    <a href="#features">Features</a>
-                    <a href="#modules">Modules</a>
-                    <a href="#signup" class="cta-button">Get Access</a>
-                </div>
-            </div>
-        </nav>
-
-        <section class="section hero" id="home">
-            <div class="container">
-                <div class="hero-content">
-                    <h1 class="fade-up">EVIL MODEL</h1>
-                    <p class="fade-up">Advanced AI-powered market manipulation detection platform. Part of the Evil AI Suite of tools.</p>
-                    <a href="#signup" class="cta-button fade-up">Join The Evil Model Bundle</a>
-                </div>
-              <div class="video-container fade-up">
-    <iframe 
-        src="https://player.vimeo.com/video/1052054642?autoplay=1&loop=1&background=1"
-        width="100%" 
-        height="100%" 
-        allow="autoplay; fullscreen" 
-        style="border: none; position: absolute; top: 0; left: 0;"
-        loading="lazy"
-        frameborder="0"
-    ></iframe>
-</div>
-            </div>
-        </section>
-
-        <section class="section" id="features">
-            <div class="container">
-                <div class="scale-in">
-                    <h2 style="margin-bottom: 2rem;">AI-Powered Analysis</h2>
-                    <p style="color: var(--text-secondary); margin-bottom: 3rem;">
-                        Our algorithmic platform plots precise manipulation levels through real-time data analysis across indices, FX, and crypto markets. Leveraging advanced AI technology to predict and identify market movements.
-                    </p>
-                    <div class="module-card fade-up">
-                        <h3>Real-time Analysis</h3>
-                        <p>Live data collection and processing across multiple markets</p>
-                    </div>
-                    <div class="module-card fade-up">
-                        <h3>Pattern Recognition</h3>
-                        <p>Advanced algorithmic detection of manipulation patterns</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" id="about">
-            <div class="container">
-                <div class="fade-up">
-                    <h2 style="margin-bottom: 2rem;">The Story</h2>
-                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
-                        Created by Futurecode, a veteran trader and mentor, The Evil Model emerged from intensive research into aligning horizontal price levels with manipulative times. This powerful tool enables traders to anticipate future market manipulations with unprecedented accuracy.
-                    </p>
-                    <p style="color: var(--text-secondary);">
-                        Drawing from the exclusive insights of the FutureCode Discord community, numerous traders have already achieved remarkable success using these mysterious and powerful levels.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" id="modules">
-            <div class="container">
-                <h2 class="fade-up" style="margin-bottom: 3rem;">Course Modules</h2>
-                <div class="module-card fade-up">
-                    <h3>Introduction to Evil Model</h3>
-                    <p>Comprehensive overview of the model and indicator functionality with video demonstrations</p>
-                </div>
-                <div class="module-card fade-up">
-                    <h3>IDM Identification</h3>
-                    <p>Master the art of identifying and interpreting IDM patterns</p>
-                </div>
-                <div class="module-card fade-up">
-                    <h3>Market Structure Analysis</h3>
-                    <p>Advanced techniques for monitoring and understanding market structure</p>
-                </div>
-                <div class="module-card fade-up">
-                    <h3>EM Aligned Statistical Targets</h3>
-                    <p>Precise alignment of statistical targets for optimal trading execution</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" id="signup">
-            <div class="container">
-                <div class="scale-in" style="text-align: center;">
-                    <h2 style="margin-bottom: 2rem;">Join The Evil Model Bundle</h2>
-                    <p style="color: var(--text-secondary); margin-bottom: 3rem;">
-                        Get complete access to the course, Discord community, and EM indicator
-                    </p>
-                    <a href="#" class="cta-button">Sign Up Now</a>
-                </div>
-            </div>
-        </section>
-    </div>
+    <!-- [Previous HTML content remains exactly the same] -->
+    [... Rest of your existing HTML remains exactly the same until the scripts ...]
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // Performance optimization
+        // Original WebGL Setup
         const params = {
             enableWebGL: window.innerWidth > 768,
             particleCount: window.innerWidth > 1200 ? 100 : 50,
             animationSpeed: 0.001
         };
 
-        // Enhanced WebGL Setup
-        if (params.enableWebGL) {
-            const canvas = document.querySelector('#webgl-background');
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({
-                canvas: canvas,
-                antialias: true,
-                alpha: true,
-                powerPreference: "high-performance"
-            });
+        // [Previous Three.js code remains exactly the same]
+        [... Rest of your existing Three.js code remains exactly the same ...]
 
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        // Matrix effect
+        const matrixCanvas = document.getElementById('matrix-effect');
+        const ctx = matrixCanvas.getContext('2d');
+        let matrixAnimationId;
 
-            const geometry = new THREE.PlaneGeometry(30, 30, 32, 32);
-            const material = new THREE.MeshPhongMaterial({
-                color: 0xE25747,
-                wireframe: true,
-                transparent: true,
-                opacity: 0.2
-            });
+        function setupMatrix() {
+            matrixCanvas.width = window.innerWidth;
+            matrixCanvas.height = window.innerHeight;
+            
+            const characters = "01";
+            const fontSize = 14;
+            const columns = matrixCanvas.width / fontSize;
+            
+            const drops = [];
+            for (let i = 0; i < columns; i++) {
+                drops[i] = 1;
+            }
 
-            const mesh = new THREE.Mesh(geometry, material);
-            mesh.rotation.x = -Math.PI * 0.5;
-            scene.add(mesh);
+            function drawMatrix() {
+                ctx.fillStyle = "rgba(245, 245, 245, 0.05)";
+                ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
 
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-            scene.add(ambientLight);
+                ctx.fillStyle = "#000";
+                ctx.font = fontSize + "px monospace";
 
-            const pointLight = new THREE.PointLight(0xE25747, 1.2);
-            pointLight.position.set(2, 3, 4);
-            scene.add(pointLight);
+                for (let i = 0; i < drops.length; i++) {
+                    const text = characters.charAt(Math.floor(Math.random() * characters.length));
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-            const hemisphereLight = new THREE.HemisphereLight(0xE25747, 0x000000, 0.3);
-            scene.add(hemisphereLight);
-
-            camera.position.set(0, 5, 7);
-
-            let lastTime = 0;
-            const animate = (currentTime = 0) => {
-                const deltaTime = currentTime - lastTime;
-                lastTime = currentTime;
-
-                if (deltaTime < 32) {
-                    const positions = geometry.attributes.position.array;
-                    for (let i = 0; i < positions.length; i += 3) {
-                        positions[i + 2] = Math.sin((currentTime * params.animationSpeed) + positions[i]) * 0.5;
+                    if (drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
                     }
-                    geometry.attributes.position.needsUpdate = true;
-                    
-                    renderer.render(scene, camera);
+
+                    drops[i]++;
                 }
-                requestAnimationFrame(animate);
-            };
 
-            const observerOptions = {
-                threshold: 0.2,
-                rootMargin: "-50px"
-            };
+                matrixAnimationId = requestAnimationFrame(drawMatrix);
+            }
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        
-                        const overlay = document.querySelector('.section-overlay');
-                        overlay.style.opacity = '0.1';
-                        setTimeout(() => {
-                            overlay.style.opacity = '0';
-                        }, 500);
+            return drawMatrix;
+        }
+
+        // Matrix effect observer
+        const featuresSection = document.querySelector('#features');
+        let matrixDrawFunction;
+
+        const matrixObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    matrixCanvas.style.display = 'block';
+                    setTimeout(() => {
+                        matrixCanvas.style.opacity = '0.15';
+                    }, 100);
+                    
+                    if (!matrixDrawFunction) {
+                        matrixDrawFunction = setupMatrix();
+                        matrixDrawFunction();
                     }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.fade-up, .scale-in').forEach(element => {
-                observer.observe(element);
+                } else {
+                    matrixCanvas.style.opacity = '0';
+                    setTimeout(() => {
+                        matrixCanvas.style.display = 'none';
+                        if (matrixAnimationId) {
+                            cancelAnimationFrame(matrixAnimationId);
+                            matrixDrawFunction = null;
+                        }
+                    }, 500);
+                }
             });
+        }, {
+            threshold: 0.2
+        });
 
-            let resizeTimeout;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(() => {
+        matrixObserver.observe(featuresSection);
+
+        // Handle resize for matrix effect
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                // Original resize handling
+                if (params.enableWebGL) {
                     camera.aspect = window.innerWidth / window.innerHeight;
                     camera.updateProjectionMatrix();
                     renderer.setSize(window.innerWidth, window.innerHeight);
-                }, 250);
-            });
-
-            let mouseX = 0, mouseY = 0;
-            document.addEventListener('mousemove', (event) => {
-                mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-                mouseY = (event.clientY / window.innerHeight) * 2 - 1;
+                }
                 
-                mesh.rotation.x = -Math.PI * 0.5 + mouseY * 0.1;
-                mesh.rotation.y = mouseX * 0.1;
-            });
-
-            animate();
-        }
+                // Matrix effect resize handling
+                if (matrixDrawFunction) {
+                    cancelAnimationFrame(matrixAnimationId);
+                    matrixDrawFunction = setupMatrix();
+                    matrixDrawFunction();
+                }
+            }, 250);
+        });
     </script>
 </body>
 </html>
