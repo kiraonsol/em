@@ -5,22 +5,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EVIL MODEL | AI Trading Platform</title>
     <style>
-        /* Previous styles remain the same */
-        
-        /* Add Matrix canvas styling */
-        #matrix-canvas {
-            position: absolute;
+        :root {
+            --primary: #00ff00;
+            --background: #0a0a0a;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --card-background: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        #webgl-background {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            pointer-events: none;
-            z-index: 1;
+            z-index: -1;
         }
 
-        /* Update video container aspect ratio */
+        .section-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .section {
+            min-height: 100vh;
+            padding: 6rem 2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .hero {
+            text-align: center;
+        }
+
+        .hero-content {
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
         .video-container {
             position: relative;
             width: 100%;
@@ -36,13 +123,54 @@
             transition: all 0.3s ease-out;
         }
 
-        /* Add relative positioning to features section */
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--primary);
+            color: var(--background);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
+        }
+
+        .module-card {
+            background: var(--card-background);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Matrix Animation Styles */
+        #matrix-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
         #features {
             position: relative;
             overflow: hidden;
         }
 
-        /* Add contrast to text over matrix animation */
         #features .container {
             position: relative;
             z-index: 2;
@@ -53,25 +181,73 @@
         #features .module-card {
             position: relative;
             z-index: 2;
-            background: rgba(245, 245, 245, 0.9);
+            background: rgba(10, 10, 10, 0.8);
             backdrop-filter: blur(5px);
         }
 
-        /* Previous styles remain unchanged... */
+        /* Animation Classes */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.6s ease forwards;
+        }
+
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.95);
+            animation: scaleIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .section {
+                padding: 4rem 1rem;
+            }
+        }
     </style>
 </head>
-<body>
-    <!-- Previous canvas and overlay elements -->
+<!-- The rest of the HTML and JavaScript code remains the same as in the previous response -->
+    <body>
     <canvas id="webgl-background"></canvas>
     <div class="section-overlay"></div>
     
     <div class="content">
-        <!-- Navigation remains the same -->
         <nav class="navbar">
-            <!-- Navigation content remains unchanged -->
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#modules">Modules</a></li>
+                <li><a href="#signup">Sign Up</a></li>
+            </ul>
         </nav>
 
-        <!-- Hero section with updated video container -->
         <section class="section hero" id="home">
             <div class="container">
                 <div class="hero-content">
@@ -93,12 +269,11 @@
             </div>
         </section>
 
-        <!-- Features section with matrix animation -->
         <section class="section" id="features">
             <canvas id="matrix-canvas"></canvas>
             <div class="container">
                 <div class="scale-in">
-                    <h2 style="margin-bottom: 2rem;">AI-Powered Analysis</h2>
+                    <h2>AI-Powered Analysis</h2>
                     <p style="color: var(--text-secondary); margin-bottom: 3rem;">
                         Our algorithmic platform plots precise manipulation levels through real-time data analysis across indices, FX, and crypto markets. Leveraging advanced AI technology to predict and identify market movements.
                     </p>
@@ -114,55 +289,95 @@
             </div>
         </section>
 
-        <!-- Rest of the sections remain unchanged -->
-<!-- Continuing from previous sections -->
         <section class="section" id="about">
             <div class="container">
-                <!-- About section content remains unchanged -->
+                <h2 class="fade-up">About Evil Model</h2>
+                <p class="fade-up">State-of-the-art artificial intelligence designed to detect and analyze market manipulation patterns.</p>
             </div>
         </section>
 
         <section class="section" id="modules">
             <div class="container">
-                <!-- Modules section content remains unchanged -->
+                <h2 class="fade-up">Available Modules</h2>
+                <div class="module-card fade-up">
+                    <h3>Core Detection</h3>
+                    <p>Primary manipulation detection system</p>
+                </div>
+                <div class="module-card fade-up">
+                    <h3>Advanced Analytics</h3>
+                    <p>Deep market analysis and pattern recognition</p>
+                </div>
             </div>
         </section>
 
         <section class="section" id="signup">
             <div class="container">
-                <!-- Signup section content remains unchanged -->
+                <h2 class="fade-up">Join Evil Model</h2>
+                <p class="fade-up">Get access to our suite of advanced trading tools</p>
+                <a href="#" class="cta-button fade-up">Subscribe Now</a>
             </div>
         </section>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // Previous WebGL code remains unchanged
-        
-        // Matrix Rain Animation
+        // WebGL Background
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({
+            canvas: document.querySelector('#webgl-background'),
+            antialias: true
+        });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+
+        const geometry = new THREE.PlaneGeometry(100, 100, 50, 50);
+        const material = new THREE.MeshBasicMaterial({
+            color: 0x00ff00,
+            wireframe: true
+        });
+
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.rotation.x = -Math.PI / 2;
+        scene.add(mesh);
+
+        camera.position.z = 5;
+        camera.position.y = 2;
+        camera.lookAt(0, 0, 0);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            mesh.rotation.z += 0.001;
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Matrix Animation
         const matrixCanvas = document.getElementById('matrix-canvas');
         const ctx = matrixCanvas.getContext('2d');
         
         let matrixAnimationActive = false;
-        
-        // Matrix characters
         const chars = '01';
         const fontSize = 14;
         let columns;
         let drops = [];
-        
+
         function initMatrix() {
             matrixCanvas.width = matrixCanvas.offsetWidth;
             matrixCanvas.height = matrixCanvas.offsetHeight;
             
             columns = Math.floor(matrixCanvas.width / fontSize);
-            drops = [];
-            
-            for(let i = 0; i < columns; i++) {
-                drops[i] = 1;
-            }
+            drops = Array(columns).fill(1);
         }
-        
+
         function drawMatrix() {
             if (!matrixAnimationActive) return;
             
@@ -172,81 +387,53 @@
             ctx.fillStyle = '#0F0';
             ctx.font = fontSize + 'px monospace';
             
-            for(let i = 0; i < drops.length; i++) {
+            drops.forEach((drop, i) => {
                 const text = chars[Math.floor(Math.random() * chars.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                ctx.fillText(text, i * fontSize, drop * fontSize);
                 
-                if(drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) {
+                if (drop * fontSize > matrixCanvas.height && Math.random() > 0.975) {
                     drops[i] = 0;
                 }
                 drops[i]++;
-            }
+            });
             
             requestAnimationFrame(drawMatrix);
         }
-        
-        // Intersection Observer for Matrix Animation
+
+        // Intersection Observer
         const featuresSection = document.getElementById('features');
         const matrixObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     matrixAnimationActive = true;
                     matrixCanvas.style.opacity = '0.15';
-                    if (!drops.length) {
-                        initMatrix();
-                    }
+                    if (!drops.length) initMatrix();
                     drawMatrix();
                 } else {
                     matrixAnimationActive = false;
                     matrixCanvas.style.opacity = '0';
                 }
             });
-        }, {
-            threshold: 0.2
-        });
-        
+        }, { threshold: 0.2 });
+
         matrixObserver.observe(featuresSection);
-        
-        // Handle resize for matrix canvas
-        let matrixResizeTimeout;
-        window.addEventListener('resize', () => {
-            clearTimeout(matrixResizeTimeout);
-            matrixResizeTimeout = setTimeout(() => {
-                initMatrix();
-            }, 250);
-        });
-        
-        // Previous animation and observer code remains unchanged
-        
-        // Initialize matrix on load
+
+        // Initialize everything
         window.addEventListener('load', initMatrix);
-        
-        // Enhanced scroll behavior for navigation
+        window.addEventListener('resize', () => {
+            clearTimeout(window.matrixResizeTimeout);
+            window.matrixResizeTimeout = setTimeout(initMatrix, 250);
+        });
+
+        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
         });
-        
-        // Performance optimization for animations
-        window.addEventListener('scroll', () => {
-            requestAnimationFrame(() => {
-                const scrolled = window.pageYOffset;
-                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-                const scrollPercent = scrolled / maxScroll;
-                
-                // Adjust overlay opacity based on scroll
-                const overlay = document.querySelector('.section-overlay');
-                overlay.style.opacity = Math.min(0.6, scrollPercent);
-            });
-        }, { passive: true });
     </script>
 </body>
 </html>
