@@ -145,19 +145,20 @@
         }
 
         .video-container {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16/9;
-            border-radius: 12px;
-            overflow: hidden;
-            transform: translateZ(0);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15),
-                        0 10px 20px rgba(0, 0, 0, 0.1);
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease-out;
-        }
+    position: relative;
+    width: 100%;
+    /* Updated aspect ratio to match 1920x1040 */
+    aspect-ratio: 1920/1040;
+    border-radius: 12px;
+    overflow: hidden;
+    transform: translateZ(0);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15),
+                0 10px 20px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease-out;
+}
 
         .video-container iframe {
             width: 100%;
