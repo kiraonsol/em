@@ -133,6 +133,49 @@
             transform-style: preserve-3d;
         }
 
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1920/1040;
+            border-radius: 12px;
+            overflow: hidden;
+            transform: translateZ(0);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15),
+                        0 10px 20px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease-out;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .video-container:hover {
+            transform: translateY(-5px) translateZ(0);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2),
+                        0 15px 25px rgba(0, 0, 0, 0.15);
+        }
+
         .hero h1 {
             font-size: clamp(3rem, 8vw, 6rem);
             line-height: 1;
@@ -204,6 +247,22 @@
             background: #1a1a1a;
         }
 
+        @media (max-width: 1024px) {
+            .hero .container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .video-container {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+        }
+
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -238,9 +297,22 @@
 
         <section class="section hero" id="home">
             <div class="container">
-                <h1 class="fade-up">EVIL MODEL</h1>
-                <p class="fade-up">Advanced AI-powered market manipulation detection platform. Part of the Evil AI Suite of tools.</p>
-                <a href="#signup" class="cta-button fade-up">Join The Evil Model Bundle</a>
+                <div class="hero-content">
+                    <h1 class="fade-up">EVIL MODEL</h1>
+                    <p class="fade-up">Advanced AI-powered market manipulation detection platform. Part of the Evil AI Suite of tools.</p>
+                    <a href="#signup" class="cta-button fade-up">Join The Evil Model Bundle</a>
+                </div>
+                <div class="video-container fade-up">
+                    <iframe 
+                        src="https://player.vimeo.com/video/1050832157?autoplay=1&loop=1&background=1"
+                        width="100%" 
+                        height="100%" 
+                        allow="autoplay; fullscreen" 
+                        style="border: none; position: absolute; top: 0; left: 0;"
+                        loading="lazy"
+                        frameborder="0"
+                    ></iframe>
+                </div>
             </div>
         </section>
 
@@ -314,14 +386,12 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // Performance optimization
         const params = {
             enableWebGL: window.innerWidth > 768,
             particleCount: window.innerWidth > 1200 ? 100 : 50,
             animationSpeed: 0.001
         };
 
-        // Enhanced WebGL Setup
         if (params.enableWebGL) {
             const canvas = document.querySelector('#webgl-background');
             const scene = new THREE.Scene();
@@ -336,7 +406,6 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-            // Create animated grid with darker orange
             const geometry = new THREE.PlaneGeometry(30, 30, 32, 32);
             const material = new THREE.MeshPhongMaterial({
                 color: 0xE25747,
@@ -349,7 +418,6 @@
             mesh.rotation.x = -Math.PI * 0.5;
             scene.add(mesh);
 
-            // Enhanced lighting
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
             scene.add(ambientLight);
 
@@ -362,13 +430,12 @@
 
             camera.position.set(0, 5, 7);
 
-            // Optimized animation
             let lastTime = 0;
             const animate = (currentTime = 0) => {
                 const deltaTime = currentTime - lastTime;
                 lastTime = currentTime;
 
-                if (deltaTime < 32) { // Cap at ~30fps for performance
+                if (deltaTime < 32) {
                     const positions = geometry.attributes.position.array;
                     for (let i = 0; i < positions.length; i += 3) {
                         positions[i + 2] = Math.sin((currentTime * params.animationSpeed) + positions[i]) * 0.5;
@@ -380,7 +447,6 @@
                 requestAnimationFrame(animate);
             };
 
-            // Enhanced scroll animations
             const observerOptions = {
                 threshold: 0.2,
                 rootMargin: "-50px"
@@ -391,7 +457,6 @@
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
                         
-                        // Section transition effect
                         const overlay = document.querySelector('.section-overlay');
                         overlay.style.opacity = '0.1';
                         setTimeout(() => {
@@ -405,7 +470,6 @@
                 observer.observe(element);
             });
 
-            // Optimized resize handler
             let resizeTimeout;
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimeout);
@@ -416,7 +480,6 @@
                 }, 250);
             });
 
-            // Mouse movement effect
             let mouseX = 0, mouseY = 0;
             document.addEventListener('mousemove', (event) => {
                 mouseX = (event.clientX / window.innerWidth) * 2 - 1;
@@ -426,7 +489,6 @@
                 mesh.rotation.y = mouseX * 0.1;
             });
 
-            // Start animation
             animate();
         }
     </script>
