@@ -6,23 +6,28 @@
     <title>EVIL MODEL | AI Trading Platform</title>
     <style>
         :root {
-            --primary: #00ff00;
-            --background: #0a0a0a;
-            --text-primary: #ffffff;
-            --text-secondary: #888888;
-            --card-background: rgba(255, 255, 255, 0.05);
+            --primary: #FF6F61;
+            --primary-dark: #E25747;
+            --background: #F5F5F5;
+            --text: #000000;
+            --text-secondary: rgba(0, 0, 0, 0.7);
+            --overlay: rgba(245, 245, 245, 0.9);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--background);
         }
 
         body {
-            background: var(--background);
-            color: var(--text-primary);
+            color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
         }
@@ -32,8 +37,15 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            z-index: -1;
+            height: 100vh;
+            z-index: 1;
+            opacity: 0.3;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            perspective: 1000px;
         }
 
         .section-overlay {
@@ -42,9 +54,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.3);
+            background: var(--overlay);
             pointer-events: none;
-            z-index: -1;
+            opacity: 0;
+            z-index: 99;
+            transition: opacity 0.5s ease;
         }
 
         .navbar {
@@ -52,228 +66,188 @@
             top: 0;
             left: 0;
             width: 100%;
-            padding: 1.5rem;
-            background: rgba(10, 10, 10, 0.95);
+            padding: 2rem;
+            z-index: 100;
+            background: rgba(245, 245, 245, 0.8);
             backdrop-filter: blur(10px);
-            z-index: 1000;
+            transform: translateZ(0);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.1em;
         }
 
         .nav-links {
             display: flex;
-            justify-content: center;
             gap: 2rem;
-            list-style: none;
+            align-items: center;
         }
 
         .nav-links a {
-            color: var(--text-primary);
+            color: var(--text);
             text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
-        .nav-links a:hover {
-            color: var(--primary);
+        .nav-links a:not(.cta-button)::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:not(.cta-button):hover::after {
+            width: 100%;
         }
 
         .section {
             min-height: 100vh;
-            padding: 6rem 2rem;
+            padding: 8rem 2rem;
             display: flex;
             align-items: center;
+            position: relative;
+            transform-style: preserve-3d;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
+            transform-style: preserve-3d;
         }
 
-        .hero {
-            text-align: center;
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            line-height: 1;
+            margin-bottom: 2rem;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .hero-content {
+        .hero p {
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            max-width: 600px;
             margin-bottom: 3rem;
+            color: var(--text-secondary);
         }
 
-        h1 {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            letter-spacing: 2px;
-        }
-
-        h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .video-container {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 1920/1040;
-            border-radius: 12px;
-            overflow: hidden;
+        .module-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             transform: translateZ(0);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15),
-                        0 10px 20px rgba(0, 0, 0, 0.1);
-            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .module-card:hover {
+            transform: translateY(-10px) translateZ(20px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px) translateZ(0);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0) translateZ(0);
+        }
+
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.9) translateZ(0);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .scale-in.visible {
+            opacity: 1;
+            transform: scale(1) translateZ(0);
         }
 
         .cta-button {
             display: inline-block;
             padding: 1rem 2rem;
-            background: var(--primary);
-            color: var(--background);
+            background: var(--text);
+            color: var(--background) !important;
             text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: all 0.3s ease;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateZ(0);
         }
 
         .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
+            transform: translateY(-2px) translateZ(20px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            background: #1a1a1a;
         }
 
-        .module-card {
-            background: var(--card-background);
-            border-radius: 10px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .module-card:hover {
-            transform: translateY(-5px);
-        }
-
-        /* Matrix Animation Styles */
-        #matrix-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        #features {
-            position: relative;
-            overflow: hidden;
-        }
-
-        #features .container {
-            position: relative;
-            z-index: 2;
-        }
-
-        #features h2,
-        #features p,
-        #features .module-card {
-            position: relative;
-            z-index: 2;
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(5px);
-        }
-
-        /* Animation Classes */
-        .fade-up {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeUp 0.6s ease forwards;
-        }
-
-        .scale-in {
-            opacity: 0;
-            transform: scale(0.95);
-            animation: scaleIn 0.6s ease forwards;
-        }
-
-        @keyframes fadeUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes scaleIn {
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        /* Responsive Design */
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            h2 {
-                font-size: 2rem;
-            }
-
             .nav-links {
-                gap: 1rem;
+                display: none;
             }
 
             .section {
-                padding: 4rem 1rem;
+                padding: 6rem 1.5rem;
+            }
+
+            .module-card:hover {
+                transform: translateY(-5px) translateZ(10px);
             }
         }
     </style>
 </head>
-<!-- The rest of the HTML and JavaScript code remains the same as in the previous response -->
-    <body>
+<body>
     <canvas id="webgl-background"></canvas>
     <div class="section-overlay"></div>
     
     <div class="content">
         <nav class="navbar">
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#modules">Modules</a></li>
-                <li><a href="#signup">Sign Up</a></li>
-            </ul>
+            <div class="nav-content">
+                <a href="#" class="logo">EVIL MODEL</a>
+                <div class="nav-links">
+                    <a href="#about">About</a>
+                    <a href="#features">Features</a>
+                    <a href="#modules">Modules</a>
+                    <a href="#signup" class="cta-button">Get Access</a>
+                </div>
+            </div>
         </nav>
 
         <section class="section hero" id="home">
             <div class="container">
-                <div class="hero-content">
-                    <h1 class="fade-up">EVIL MODEL</h1>
-                    <p class="fade-up">Advanced AI-powered market manipulation detection platform. Part of the Evil AI Suite of tools.</p>
-                    <a href="#signup" class="cta-button fade-up">Join The Evil Model Bundle</a>
-                </div>
-                <div class="video-container fade-up">
-                    <iframe 
-                        src="https://player.vimeo.com/video/1050832157?autoplay=1&loop=1&background=1"
-                        width="100%" 
-                        height="100%" 
-                        allow="autoplay; fullscreen" 
-                        style="border: none; position: absolute; top: 0; left: 0;"
-                        loading="lazy"
-                        frameborder="0"
-                    ></iframe>
-                </div>
+                <h1 class="fade-up">EVIL MODEL</h1>
+                <p class="fade-up">Advanced AI-powered market manipulation detection platform. Part of the Evil AI Suite of tools.</p>
+                <a href="#signup" class="cta-button fade-up">Join The Evil Model Bundle</a>
             </div>
         </section>
 
         <section class="section" id="features">
-            <canvas id="matrix-canvas"></canvas>
             <div class="container">
                 <div class="scale-in">
-                    <h2>AI-Powered Analysis</h2>
+                    <h2 style="margin-bottom: 2rem;">AI-Powered Analysis</h2>
                     <p style="color: var(--text-secondary); margin-bottom: 3rem;">
                         Our algorithmic platform plots precise manipulation levels through real-time data analysis across indices, FX, and crypto markets. Leveraging advanced AI technology to predict and identify market movements.
                     </p>
@@ -291,149 +265,170 @@
 
         <section class="section" id="about">
             <div class="container">
-                <h2 class="fade-up">About Evil Model</h2>
-                <p class="fade-up">State-of-the-art artificial intelligence designed to detect and analyze market manipulation patterns.</p>
+                <div class="fade-up">
+                    <h2 style="margin-bottom: 2rem;">The Story</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                        Created by Futurecode, a veteran trader and mentor, The Evil Model emerged from intensive research into aligning horizontal price levels with manipulative times. This powerful tool enables traders to anticipate future market manipulations with unprecedented accuracy.
+                    </p>
+                    <p style="color: var(--text-secondary);">
+                        Drawing from the exclusive insights of the FutureCode Discord community, numerous traders have already achieved remarkable success using these mysterious and powerful levels.
+                    </p>
+                </div>
             </div>
         </section>
 
         <section class="section" id="modules">
             <div class="container">
-                <h2 class="fade-up">Available Modules</h2>
+                <h2 class="fade-up" style="margin-bottom: 3rem;">Course Modules</h2>
                 <div class="module-card fade-up">
-                    <h3>Core Detection</h3>
-                    <p>Primary manipulation detection system</p>
+                    <h3>Introduction to Evil Model</h3>
+                    <p>Comprehensive overview of the model and indicator functionality with video demonstrations</p>
                 </div>
                 <div class="module-card fade-up">
-                    <h3>Advanced Analytics</h3>
-                    <p>Deep market analysis and pattern recognition</p>
+                    <h3>IDM Identification</h3>
+                    <p>Master the art of identifying and interpreting IDM patterns</p>
+                </div>
+                <div class="module-card fade-up">
+                    <h3>Market Structure Analysis</h3>
+                    <p>Advanced techniques for monitoring and understanding market structure</p>
+                </div>
+                <div class="module-card fade-up">
+                    <h3>EM Aligned Statistical Targets</h3>
+                    <p>Precise alignment of statistical targets for optimal trading execution</p>
                 </div>
             </div>
         </section>
 
         <section class="section" id="signup">
             <div class="container">
-                <h2 class="fade-up">Join Evil Model</h2>
-                <p class="fade-up">Get access to our suite of advanced trading tools</p>
-                <a href="#" class="cta-button fade-up">Subscribe Now</a>
+                <div class="scale-in" style="text-align: center;">
+                    <h2 style="margin-bottom: 2rem;">Join The Evil Model Bundle</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 3rem;">
+                        Get complete access to the course, Discord community, and EM indicator
+                    </p>
+                    <a href="#" class="cta-button">Sign Up Now</a>
+                </div>
             </div>
         </section>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // WebGL Background
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({
-            canvas: document.querySelector('#webgl-background'),
-            antialias: true
-        });
+        // Performance optimization
+        const params = {
+            enableWebGL: window.innerWidth > 768,
+            particleCount: window.innerWidth > 1200 ? 100 : 50,
+            animationSpeed: 0.001
+        };
 
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
+        // Enhanced WebGL Setup
+        if (params.enableWebGL) {
+            const canvas = document.querySelector('#webgl-background');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({
+                canvas: canvas,
+                antialias: true,
+                alpha: true,
+                powerPreference: "high-performance"
+            });
 
-        const geometry = new THREE.PlaneGeometry(100, 100, 50, 50);
-        const material = new THREE.MeshBasicMaterial({
-            color: 0x00ff00,
-            wireframe: true
-        });
-
-        const mesh = new THREE.Mesh(geometry, material);
-        mesh.rotation.x = -Math.PI / 2;
-        scene.add(mesh);
-
-        camera.position.z = 5;
-        camera.position.y = 2;
-        camera.lookAt(0, 0, 0);
-
-        function animate() {
-            requestAnimationFrame(animate);
-            mesh.rotation.z += 0.001;
-            renderer.render(scene, camera);
-        }
-
-        animate();
-
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        // Matrix Animation
-        const matrixCanvas = document.getElementById('matrix-canvas');
-        const ctx = matrixCanvas.getContext('2d');
-        
-        let matrixAnimationActive = false;
-        const chars = '01';
-        const fontSize = 14;
-        let columns;
-        let drops = [];
-
-        function initMatrix() {
-            matrixCanvas.width = matrixCanvas.offsetWidth;
-            matrixCanvas.height = matrixCanvas.offsetHeight;
-            
-            columns = Math.floor(matrixCanvas.width / fontSize);
-            drops = Array(columns).fill(1);
-        }
-
-        function drawMatrix() {
-            if (!matrixAnimationActive) return;
-            
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
-            
-            ctx.fillStyle = '#0F0';
-            ctx.font = fontSize + 'px monospace';
-            
-            drops.forEach((drop, i) => {
-                const text = chars[Math.floor(Math.random() * chars.length)];
-                ctx.fillText(text, i * fontSize, drop * fontSize);
-                
-                if (drop * fontSize > matrixCanvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
+            // Create animated grid with darker orange
+            const geometry = new THREE.PlaneGeometry(30, 30, 32, 32);
+            const material = new THREE.MeshPhongMaterial({
+                color: 0xE25747,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.2
             });
-            
-            requestAnimationFrame(drawMatrix);
-        }
 
-        // Intersection Observer
-        const featuresSection = document.getElementById('features');
-        const matrixObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    matrixAnimationActive = true;
-                    matrixCanvas.style.opacity = '0.15';
-                    if (!drops.length) initMatrix();
-                    drawMatrix();
-                } else {
-                    matrixAnimationActive = false;
-                    matrixCanvas.style.opacity = '0';
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.rotation.x = -Math.PI * 0.5;
+            scene.add(mesh);
+
+            // Enhanced lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            const pointLight = new THREE.PointLight(0xE25747, 1.2);
+            pointLight.position.set(2, 3, 4);
+            scene.add(pointLight);
+
+            const hemisphereLight = new THREE.HemisphereLight(0xE25747, 0x000000, 0.3);
+            scene.add(hemisphereLight);
+
+            camera.position.set(0, 5, 7);
+
+            // Optimized animation
+            let lastTime = 0;
+            const animate = (currentTime = 0) => {
+                const deltaTime = currentTime - lastTime;
+                lastTime = currentTime;
+
+                if (deltaTime < 32) { // Cap at ~30fps for performance
+                    const positions = geometry.attributes.position.array;
+                    for (let i = 0; i < positions.length; i += 3) {
+                        positions[i + 2] = Math.sin((currentTime * params.animationSpeed) + positions[i]) * 0.5;
+                    }
+                    geometry.attributes.position.needsUpdate = true;
+                    
+                    renderer.render(scene, camera);
                 }
-            });
-        }, { threshold: 0.2 });
+                requestAnimationFrame(animate);
+            };
 
-        matrixObserver.observe(featuresSection);
+            // Enhanced scroll animations
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: "-50px"
+            };
 
-        // Initialize everything
-        window.addEventListener('load', initMatrix);
-        window.addEventListener('resize', () => {
-            clearTimeout(window.matrixResizeTimeout);
-            window.matrixResizeTimeout = setTimeout(initMatrix, 250);
-        });
-
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        
+                        // Section transition effect
+                        const overlay = document.querySelector('.section-overlay');
+                        overlay.style.opacity = '0.1';
+                        setTimeout(() => {
+                            overlay.style.opacity = '0';
+                        }, 500);
+                    }
                 });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-up, .scale-in').forEach(element => {
+                observer.observe(element);
             });
-        });
+
+            // Optimized resize handler
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                }, 250);
+            });
+
+            // Mouse movement effect
+            let mouseX = 0, mouseY = 0;
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+                mouseY = (event.clientY / window.innerHeight) * 2 - 1;
+                
+                mesh.rotation.x = -Math.PI * 0.5 + mouseY * 0.1;
+                mesh.rotation.y = mouseX * 0.1;
+            });
+
+            // Start animation
+            animate();
+        }
     </script>
 </body>
 </html>
