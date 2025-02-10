@@ -306,7 +306,7 @@
                 </div>
                 <div class="video-container fade-up">
                     <iframe 
-                        src="https://player.vimeo.com/video/1050832157?autoplay=1&loop=1&background=1"
+                        src="https://player.vimeo.com/video/1052054642?autoplay=1&loop=1&background=1"
                         width="100%" 
                         height="100%" 
                         allow="autoplay; fullscreen" 
@@ -388,7 +388,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // Matrix effect
+        // Updated Matrix effect with red color scheme
         const matrixCanvas = document.getElementById('matrix-canvas');
         const ctx = matrixCanvas.getContext('2d');
 
@@ -399,21 +399,37 @@
         resizeMatrix();
         window.addEventListener('resize', resizeMatrix);
 
+        // Updated color scheme for darker red matrix
         const chars = '01';
         const fontSize = 14;
         const columns = Math.floor(window.innerWidth / fontSize);
         const drops = new Array(columns).fill(0);
-        
+
         function drawMatrix() {
-            ctx.fillStyle = 'rgba(245, 245, 245, 0.05)';
+            // Darker overlay
+            ctx.fillStyle = 'rgba(245, 245, 245, 0.03)';
             ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
             
-            ctx.fillStyle = '#0F0';
+            // Changed to dark red color
+            const gradient = ctx.createLinearGradient(0, 0, 0, matrixCanvas.height);
+            gradient.addColorStop(0, '#660000');    // Darker red at top
+            gradient.addColorStop(0.5, '#990000');  // Medium red in middle
+            gradient.addColorStop(1, '#CC0000');    // Brighter red at bottom
+            
+            ctx.fillStyle = gradient;
             ctx.font = `${fontSize}px monospace`;
+            ctx.shadowColor = '#FF0000';
+            ctx.shadowBlur = 3;
             
             for(let i = 0; i < drops.length; i++) {
                 const text = chars[Math.floor(Math.random() * chars.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                const x = i * fontSize;
+                const y = drops[i] * fontSize;
+                
+                // Random opacity for each character to create depth
+                ctx.globalAlpha = Math.random() * 0.5 + 0.5;
+                ctx.fillText(text, x, y);
+                ctx.globalAlpha = 1;
                 
                 if(drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) {
                     drops[i] = 0;
@@ -428,7 +444,7 @@
         function startMatrix() {
             if (!isMatrixRunning) {
                 isMatrixRunning = true;
-                matrixCanvas.style.opacity = '0.15';
+                matrixCanvas.style.opacity = '0.25';
                 animateMatrix();
             }
         }
@@ -447,20 +463,6 @@
                 matrixAnimationId = requestAnimationFrame(animateMatrix);
             }
         }
-
-        // Intersection Observer setup
-        const featuresSection = document.getElementById('features');
-        const matrixObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    startMatrix();
-                } else {
-                    stopMatrix();
-                }
-            });
-        }, { threshold: 0.2 });
-
-        matrixObserver.observe(featuresSection);
 
         // WebGL background
         const params = {
@@ -568,6 +570,20 @@
 
             animate();
         }
+
+        // Matrix observer
+        const featuresSection = document.getElementById('features');
+        const matrixObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    startMatrix();
+                } else {
+                    stopMatrix();
+                }
+            });
+        }, { threshold: 0.2 });
+
+        matrixObserver.observe(featuresSection);
     </script>
 </body>
 </html>
