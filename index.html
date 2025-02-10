@@ -388,7 +388,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // Updated Matrix effect with red color scheme
+        // Matrix effect
         const matrixCanvas = document.getElementById('matrix-canvas');
         const ctx = matrixCanvas.getContext('2d');
 
@@ -399,37 +399,21 @@
         resizeMatrix();
         window.addEventListener('resize', resizeMatrix);
 
-        // Updated color scheme for darker red matrix
         const chars = '01';
         const fontSize = 14;
         const columns = Math.floor(window.innerWidth / fontSize);
         const drops = new Array(columns).fill(0);
-
+        
         function drawMatrix() {
-            // Darker overlay
-            ctx.fillStyle = 'rgba(245, 245, 245, 0.03)';
+            ctx.fillStyle = 'rgba(245, 245, 245, 0.05)';
             ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
             
-            // Changed to dark red color
-            const gradient = ctx.createLinearGradient(0, 0, 0, matrixCanvas.height);
-            gradient.addColorStop(0, '#660000');    // Darker red at top
-            gradient.addColorStop(0.5, '#990000');  // Medium red in middle
-            gradient.addColorStop(1, '#CC0000');    // Brighter red at bottom
-            
-            ctx.fillStyle = gradient;
+            ctx.fillStyle = '#0F0';
             ctx.font = `${fontSize}px monospace`;
-            ctx.shadowColor = '#FF0000';
-            ctx.shadowBlur = 3;
             
             for(let i = 0; i < drops.length; i++) {
                 const text = chars[Math.floor(Math.random() * chars.length)];
-                const x = i * fontSize;
-                const y = drops[i] * fontSize;
-                
-                // Random opacity for each character to create depth
-                ctx.globalAlpha = Math.random() * 0.5 + 0.5;
-                ctx.fillText(text, x, y);
-                ctx.globalAlpha = 1;
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
                 
                 if(drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) {
                     drops[i] = 0;
@@ -444,7 +428,7 @@
         function startMatrix() {
             if (!isMatrixRunning) {
                 isMatrixRunning = true;
-                matrixCanvas.style.opacity = '0.25';
+                matrixCanvas.style.opacity = '0.15';
                 animateMatrix();
             }
         }
@@ -463,6 +447,20 @@
                 matrixAnimationId = requestAnimationFrame(animateMatrix);
             }
         }
+
+        // Intersection Observer setup
+        const featuresSection = document.getElementById('features');
+        const matrixObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    startMatrix();
+                } else {
+                    stopMatrix();
+                }
+            });
+        }, { threshold: 0.2 });
+
+        matrixObserver.observe(featuresSection);
 
         // WebGL background
         const params = {
@@ -570,20 +568,6 @@
 
             animate();
         }
-
-        // Matrix observer
-        const featuresSection = document.getElementById('features');
-        const matrixObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    startMatrix();
-                } else {
-                    stopMatrix();
-                }
-            });
-        }, { threshold: 0.2 });
-
-        matrixObserver.observe(featuresSection);
     </script>
 </body>
 </html>
